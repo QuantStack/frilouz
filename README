@@ -1,0 +1,9 @@
+Frilouz
+=======
+
+A tiny wrapper compatible with ``ast.parse`` from the builtin ``ast`` module and
+``gast.parse`` from the great ``gast`` package.
+
+If the input code doesn't have any syntax error, it just forwards the call to
+the wrapped call. Otherwise it removes part of the input code and goes on with
+the parsing, collecting the syntax errors met on the go.
