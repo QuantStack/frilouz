@@ -4,6 +4,22 @@ Frilouz
 A tiny wrapper compatible with ``ast.parse`` from the builtin ``ast`` module and
 ``gast.parse`` from the great ``gast`` package.
 
+This package provides a single function:
+
+```
+frilou.parse(parser, *parser_args, **parser_kwargs)
+```
+
+Which returns a tuple of two elements:
+
+- first, the parsed tree
+- second, a (possibly empty) list of Syntax errors met during parsing
+
 If the input code doesn't have any syntax error, it just forwards the call to
-the wrapped call. Otherwise it removes part of the input code and goes on with
-the parsing, collecting the syntax errors met on the go.
+the wrapped call, returns the coresponding asbtract syntax tree and an empty list
+of errors.
+
+If the input does have syntax errors, it removes part of the input code and goes on with
+the parsing, collecting the syntax errors met on the go. In that case, the
+returned parsed is only partial, but may still provide valuable information for
+syntax analysis.
