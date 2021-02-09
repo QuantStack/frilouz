@@ -30,6 +30,7 @@ def _build_safe_code(code, error_line):
                 error_recovery = False
                 lastdeforcls = tok.start[0] - 1
                 lastdeforclsindent = _indent(all_lines[lastdeforcls])
+                break
             elif tok.exact_type != token.DEDENT:
                 all_lines[tok.start[0] - 1] = lastdeforclsindent + 'pass'
         elif _isdefcls(tok):
