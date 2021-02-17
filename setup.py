@@ -1,6 +1,6 @@
-from distutils.core import setup
+from setuptools import setup
 
-setup(name='frilouz',  # mab gast!
+setup(name='frilouz',
       version='0.0.1',
       py_modules=['frilouz'],
       description='Python AST parser adapter with partial error recovery',
@@ -11,7 +11,7 @@ during parsing.''',
       author='serge-sans-paille',
       author_email='serge.guelton@telecom-bretagne.eu',
       url='https://github.com/serge-sans-paille/frilouz/',
-      license="BSD 3-Clause",
+      license="BSD-3-Clause",
       classifiers=['Development Status :: 4 - Beta',
                    'Environment :: Console',
                    'Intended Audience :: Developers',
