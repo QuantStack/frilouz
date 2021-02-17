@@ -20,11 +20,13 @@ class TestErrors(unittest.TestCase):
                          'pass')
 
     def test_multiple_errors(self):
-        code = 'return def\nreturn def'
+        code = 'return def\ndef (x):pass\nreturn def'
         tree, errors = frilouz.parse(ast.parse, code)
         self.assertEqual(len(errors), 2);
         self.assertEqual(astunparse.unparse(tree).strip(),
-                         'pass\npass')
+                         'pass\n'
+                         'pass\n'
+                         'pass')
 
     def test_faulty_func(self):
         code = 'def foo():pass\ndef oops(): return return\ndef bar():pass'
