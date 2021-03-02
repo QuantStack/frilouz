@@ -42,8 +42,8 @@ class TestErrors(unittest.TestCase):
         tree, errors = frilouz.parse(ast.parse, code)
         self.assertEqual(len(errors), 1);
         self.assertEqual(astunparse.unparse(tree).strip(),
-                         'pass\n'
-                         'pass\n\n'
+                         'def foo():\n'
+                         '    pass\n\n'
                          'def bar():\n    pass')
 
     def test_faulty_nested_func_multiline(self):
@@ -74,12 +74,21 @@ class TestErrors(unittest.TestCase):
                          'pass\n\n'
                          'def bar():\n    pass')
 
+    def test_faulty_nested_class(self):
+        code = 'class oops(object):\n    class return: pass'
+        tree, errors = frilouz.parse(ast.parse, code)
+        self.assertTrue(errors);
+        self.assertEqual(astunparse.unparse(tree).strip(),
+                         'class oops(object):\n'
+                         '    pass'
+                        )
+
     def test_faulty_class_multiline(self):
         code = 'def foo():pass\nclass oops():\n def\ndef bar():pass'
         tree, errors = frilouz.parse(ast.parse, code)
         self.assertEqual(len(errors), 1);
         self.assertEqual(astunparse.unparse(tree).strip(),
-                         'def foo():\n    pass\n'
-                         'pass\n'
-                         'pass\n\n'
+                         'def foo():\n    pass\n\n'
+                         'class oops():\n'
+                         '    pass\n\n'
                          'def bar():\n    pass')

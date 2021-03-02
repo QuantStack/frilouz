@@ -37,6 +37,10 @@ def _build_safe_code(code, error_line):
             lastdeforcls = tok.start[0] - 1
             lastdeforclsindent = _indent(all_lines[lastdeforcls])
         elif tok.start[0] == error_line:
+            # In case we find a def / class that holds extra indent information
+            # we would like to use.
+            if tok.exact_type == token.INDENT:
+                continue
             error_recovery = True
             for i in range(lastdeforcls, error_line):
                 all_lines[i] = lastdeforclsindent + 'pass'
