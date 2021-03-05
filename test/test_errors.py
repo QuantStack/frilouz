@@ -22,7 +22,7 @@ class TestErrors(unittest.TestCase):
     def test_multiple_errors(self):
         code = 'return def\ndef (x):pass\nreturn def'
         tree, errors = frilouz.parse(ast.parse, code)
-        self.assertEqual(len(errors), 2);
+        self.assertEqual(len(errors), 3);
         self.assertEqual(astunparse.unparse(tree).strip(),
                          'pass\n'
                          'pass\n'
@@ -60,9 +60,8 @@ class TestErrors(unittest.TestCase):
         tree, errors = frilouz.parse(ast.parse, code)
         self.assertEqual(len(errors), 1);
         self.assertEqual(astunparse.unparse(tree).strip(),
-                         'def foo():\n    pass\n'
-                         'pass\n'
-                         'pass\n\n'
+                         'def foo():\n    pass\n\n'
+                         'def oops():\n    pass\n\n'
                          'def bar():\n    pass')
 
     def test_faulty_class(self):
@@ -92,3 +91,38 @@ class TestErrors(unittest.TestCase):
                          'class oops():\n'
                          '    pass\n\n'
                          'def bar():\n    pass')
+
+class TestMissingColumns(unittest.TestCase):
+
+    def test_def(self):
+        code = 'def foo():pass\ndef oops()\n pass\ndef bar(): pass'
+        tree, errors = frilouz.parse(ast.parse, code)
+        self.assertEqual(len(errors), 2);
+        self.assertEqual(astunparse.unparse(tree).strip(),
+                         'def foo():\n    pass\n'
+                         'pass\n'
+                         'pass\n\n'
+                         'def bar():\n    pass'
+                        )
+
+    def test_class(self):
+        code = 'def foo():pass\nclass oops\n pass\ndef bar(): pass'
+        tree, errors = frilouz.parse(ast.parse, code)
+        self.assertEqual(len(errors), 2);
+        self.assertEqual(astunparse.unparse(tree).strip(),
+                         'def foo():\n    pass\n'
+                         'pass\n'
+                         'pass\n\n'
+                         'def bar():\n    pass'
+                        )
+
+    def test_stmt(self):
+        code = 'def foo():\n if 1\n  pass\n'
+        tree, errors = frilouz.parse(ast.parse, code)
+        self.assertEqual(len(errors), 1);
+        self.assertEqual(astunparse.unparse(tree).strip(),
+                         'def foo():\n'
+                         '    pass\n'
+                         '    pass'
+                        )
+
