@@ -92,6 +92,16 @@ class TestErrors(unittest.TestCase):
                          '    pass\n\n'
                          'def bar():\n    pass')
 
+    def test_mutliple_top_level_stmt(self):
+        code = 'def ok():pass\ndef ko(): &^$\n ok()\nok()\nko()'
+        tree, errors = frilouz.parse(ast.parse, code)
+        self.assertEqual(len(errors), 2);
+        self.assertEqual(astunparse.unparse(tree).strip(),
+                         'def ok():\n    pass\n'
+                         'pass\npass\n'
+                         'ok()\n'
+                         'ko()')
+
 class TestMissingColumns(unittest.TestCase):
 
     def test_def(self):
