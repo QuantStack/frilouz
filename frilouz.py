@@ -75,7 +75,8 @@ def _build_safe_code(code, error_line):
             if tok.exact_type == token.INDENT:
                 currindent += tok.string
             elif tok.exact_type == token.DEDENT:
-                currindent = current[:-len(tok.string)]
+                currline = all_lines[tok.start[0] - 1]
+                currindent = _indent(currline)
 
             # try to keep token history small
             if tok.exact_type == token.COLON:

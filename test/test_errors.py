@@ -102,6 +102,18 @@ class TestErrors(unittest.TestCase):
                          'ok()\n'
                          'ko()')
 
+    def test_faulty_after_dedent(self):
+        code = 'if 1:\n if 2:\n  pass\n pass\n ! return'
+        tree, errors = frilouz.parse(ast.parse, code)
+        self.assertEqual(len(errors), 1);
+        self.assertEqual(astunparse.unparse(tree).strip(),
+                         'if 1:\n'
+                         '    if 2:\n'
+                         '        pass\n'
+                         '    pass\n'
+                         '    pass')
+
+
 class TestMissingColumns(unittest.TestCase):
 
     def test_def(self):
