@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='frilouz',
-      version='0.0.1',
+      version='0.0.2',
       py_modules=['frilouz'],
       description='Python AST parser adapter with partial error recovery',
       long_description='''
